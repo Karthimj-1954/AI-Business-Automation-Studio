@@ -1,0 +1,32 @@
+# System files
+.DS_Store
+Thumbs.db
+*.log
+
+# Python cache & virtual environments
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.venv/
+venv/
+ENV/
+env/
+
+# Frontend dependencies and builds
+node_modules/
+.next/
+out/
+build/
+.tscbuildinfo
+tsconfig.tsbuildinfo
+
+# Env configs (never commit API keys)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+backend/app/.env
+frontend/.env.local
