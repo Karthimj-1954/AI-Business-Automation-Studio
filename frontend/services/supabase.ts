@@ -6,7 +6,10 @@ import {
   signOut as firebaseSignOut, 
   onAuthStateChanged,
   GoogleAuthProvider,
-  signInWithPopup
+  signInWithPopup,
+  signInWithPhoneNumber,
+  RecaptchaVerifier,
+  ConfirmationResult
 } from "firebase/auth";
 
 const firebaseConfig = {
@@ -136,6 +139,36 @@ export const supabase = {
           }
         }
       };
+    },
+
+    // Phone Authentication methods
+    signInWithPhone: async (phoneNumber: string, appVerifier: RecaptchaVerifier) => {
+      try {
+        const result = await signInWithPhoneNumber(auth, phoneNumber, appVerifier);
+        return { data: result, error: null };
+      } catch (err: any) {
+        return { data: null, error: err };
+      }
+    },
+
+    confirmOtp: async (confirmationResult: ConfirmationResult, otp: string) => {
+      try {
+        const userCredential = await confirmationResult.confirm(otp);
+        const token = await userCredential.user.getIdToken();
+        return {
+          data: {
+            user: mapFirebaseUser(userCredential.user),
+            session: { access_token: token, user: mapFirebaseUser(userCredential.user) }
+          },
+          error: null
+        };
+      } catch (err: any) {
+        return { data: null, error: err };
+      }
     }
   }
 };
+
+// Export raw Firebase auth for direct use in phone auth components
+export const firebaseAuth = auth;
+
