@@ -868,7 +868,7 @@ export default function Dashboard() {
 
     initWorkspace();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event: any, session: any) => {
       if (!session) {
         router.push("/login");
       } else {
